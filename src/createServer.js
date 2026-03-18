@@ -25,6 +25,7 @@ function createServer() {
 
     if (!toCase) {
       res.statusCode = 400;
+      res.statusMessage = 'Bad request';
       res.setHeader('Content-Type', 'application/json');
 
       errors.push({
@@ -32,13 +33,15 @@ function createServer() {
       });
     } else if (!SUPPORTED_CASES.includes(toCase.toUpperCase())) {
       errors.push({
-        // eslint-disable-next-line
-        message: 'This case is not supported. Available cases: SNAKE, KEBAB, CAMEL, PASCAL, UPPER.'
+        message:
+          'This case is not supported. Available cases: ' +
+          'SNAKE, KEBAB, CAMEL, PASCAL, UPPER.',
       });
     }
 
     if (errors.length > 0) {
       res.statusCode = 400;
+      res.statusMessage = 'Bad request';
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ errors }));
 
