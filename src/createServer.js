@@ -6,7 +6,7 @@ function createServer() {
   const server = http.createServer((req, res) => {
     if (req.method !== 'GET') {
       res.statusCode = 404;
-
+      res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ error: 'Not Found' }));
 
       return;
@@ -24,8 +24,7 @@ function createServer() {
     }
 
     if (!toCase) {
-      res.statusCode = 200;
-      res.statusMessage = 'OK';
+      res.statusCode = 400;
       res.setHeader('Content-Type', 'application/json');
 
       errors.push({
@@ -39,8 +38,7 @@ function createServer() {
     }
 
     if (errors.length > 0) {
-      res.statusCode = 200;
-      res.statusMessage = 'OK';
+      res.statusCode = 400;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ errors }));
 
@@ -56,6 +54,8 @@ function createServer() {
       ...result,
     };
 
+    res.statusCode = 200;
+    res.statusMessage = 'OK';
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(response));
   });
